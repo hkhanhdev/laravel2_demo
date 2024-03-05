@@ -3,7 +3,6 @@
 @section('small_content')
     <h4>Product List</h4>
     <br>
-
     @if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -15,7 +14,24 @@
             {{ session('error') }}
         </div>
     @endif
-
+    <table class="table table-borderless">
+        <tr>
+            <td>Product Name</td>
+        </tr>
+        <tr>
+            <form method="POST" action="/admin/add_product">
+                @csrf
+            <td class="table-dark col-2">
+                <input type="text" name="prd_name_add" placeholder="Enter product name">
+            </td>
+            <td>
+                <button class="btn btn-dark" type="submit">Add</button>
+            </td>
+            </form>
+        </tr>
+    </table>
+    <br>
+    <br>
     <table class="table table-hover table-bordered table-striped">
         <thead>
         <tr>

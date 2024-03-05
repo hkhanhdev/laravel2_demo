@@ -25,4 +25,6 @@ Route::post("/admin/edit_product",[App::class,"update_prd"]);
 
 Route::post("/admin/add_cate",[App::class,'update_cate']);
 
+Route::post("/admin/add_product",[App::class,'update_prd']);
+
 

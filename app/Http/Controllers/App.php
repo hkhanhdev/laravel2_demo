@@ -68,9 +68,12 @@ class App extends Controller
     {
         $prd_id = $request->input("prd_idd");
         $prd_name = $request->input("prd_name");
-
-        $is_updated = DB::table('product')->where('id',$prd_id)->update(['prd_name'=>$prd_name]);
-
+        $prd_name_add = $request->input("prd_name_add");
+        if (isset($prd_name_add)){
+            $is_updated = DB::table('product')->insert(["prd_name"=>$prd_name_add]);
+        }else{
+            $is_updated = DB::table('product')->where('id',$prd_id)->update(['prd_name'=>$prd_name]);
+        }
         if ($is_updated) {
             return redirect()->back()->with('success', 'Record updated successfully.'); #redirect back to previous route and flash a session message
         } else {
