@@ -82,7 +82,13 @@ class App extends Controller
     {
         $cate_id = $request->input("cate_idd");
         $cate_name = $request->input("cate_name");
-        $is_updated = DB::table('category')->where('id',$cate_id)->update(['category_name'=>$cate_name]);
+        $cate_name_add = $request->input('cate_name_add');
+        if (isset($cate_name_add)){
+            $is_updated = DB::table('category')->insert(["category_name"=>$cate_name_add]);
+        }else{
+            $is_updated = DB::table('category')->where('id',$cate_id)->update(['category_name'=>$cate_name]);
+        }
+
         if ($is_updated) {
             return redirect()->back()->with('success', 'Record updated successfully.'); #redirect back to previous route and flash a session message
         } else {

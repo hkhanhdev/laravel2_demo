@@ -1,23 +1,36 @@
 @extends("admin/admin-index")
 
 @section('small_content')
-<h4>Category List</h4> {{$route->uri}}
-
-
+<h4>Category List</h4>
 <br>
-
 @if(session('success'))
     <div class="alert alert-success">
         {{ session('success') }}
     </div>
 @endif
-
 @if(session('error'))
     <div class="alert alert-danger">
         {{ session('error') }}
     </div>
 @endif
-
+<table class="table table table-borderless">
+    <tr>
+        <th scope="col-2">Category Name</th>
+    </tr>
+    <tr>
+        <form method="POST" action="/admin/add_cate">
+            @csrf
+        <td class="col-1 table-dark">
+            <input type="text" name="cate_name_add" placeholder="Enter category name">
+        </td>
+        <td class="col-2">
+            <button type="submit" class="btn btn-dark">Add</button>
+        </td>
+        </form>
+    </tr>
+</table>
+<br>
+<br>
 <table class="table table-hover table-bordered table-striped">
     <thead>
         <tr>
@@ -41,7 +54,6 @@
                         <form method="POST" action="/admin/delete_category">
                             @csrf
                             <input type="hidden" name="cate_id" value="{{$obj->id}}">
-
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
                     </td>
@@ -88,8 +100,6 @@
 
                 // Submit the form programmatically
                 form.submit();
-
-
             });
         }
     </script>
