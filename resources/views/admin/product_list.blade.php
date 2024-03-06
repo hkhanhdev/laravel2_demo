@@ -14,22 +14,30 @@
             {{ session('error') }}
         </div>
     @endif
-    <table class="table table-borderless">
-        <tr>
-            <td>Product Name</td>
-        </tr>
-        <tr>
-            <form method="POST" action="/admin/add_product">
-                @csrf
-            <td class="table-dark col-2">
-                <input type="text" name="prd_name_add" placeholder="Enter product name">
-            </td>
-            <td>
-                <button class="btn btn-dark" type="submit">Add</button>
-            </td>
-            </form>
-        </tr>
-    </table>
+    <div class="container-sm d-flex justify-content-between align-items-center" >
+        <table class="table table-borderless">
+            <tr>
+                <td>Product Name</td>
+            </tr>
+            <tr>
+                <form method="POST" action="/admin/add_product">
+                    @csrf
+                    <td class="table-dark col-2">
+                        <input type="text" name="prd_name_add" placeholder="Enter product name">
+                    </td>
+                    <td>
+                        <button class="btn btn-dark" type="submit">Add</button>
+                    </td>
+                </form>
+            </tr>
+        </table>
+        <form method="POST" action="/admin/product_list" class="d-flex" role="search">
+            @csrf
+            <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
+            <input type="hidden" name="whereAmI" value="{{$route}}">
+            <button class="btn btn-success" type="submit">Search</button>
+        </form>
+    </div>
     <br>
     <br>
     <table class="table table-hover table-bordered table-striped">
@@ -40,12 +48,13 @@
         </tr>
         </thead>
         <tbody>
+        @if($products != null)
         @foreach($products as $obj)
             <tr>
-                @if($route->uri == "admin/product_list")
+                @if($route == "admin/product_list")
                     <td>{{$obj->id}}</td>
                     <td>{{$obj->prd_name}}</td>
-                @elseif($route->uri == "admin/edit_product")
+                @elseif($route == "admin/edit_product")
                     <td>{{$obj->id}}</td>
                     <td>
                         <input type="text" id="prd_name_{{$obj->id}}" value="{{$obj->prd_name}}">
@@ -60,11 +69,11 @@
                         </form>
                     </td>
 
-                @if($route->uri == "admin/product_list")
+                @if($route == "admin/product_list")
                     <td>
                         <button type="button" class="btn btn-outline-success"><a style="text-decoration: none;color: darkgreen" href="/admin/edit_product">Edit</a></button>
                     </td>
-                @elseif($route->uri == "admin/edit_product")
+                @elseif($route == "admin/edit_product")
                     <td>
                         <form method="POST" id="myForm{{$obj->id}}" action="/admin/edit_product">
                             @csrf
@@ -76,6 +85,11 @@
                 @endif
             </tr>
         @endforeach
+        @else
+            <tr>
+                <td>No records found!</td>
+            </tr>
+        @endif
         </tbody>
     </table>
 @endsection

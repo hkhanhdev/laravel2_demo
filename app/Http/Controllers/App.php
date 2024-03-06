@@ -25,7 +25,7 @@ class App extends Controller
         $categories = DB::table("category")
             ->get();
         return view("admin/category-list", [
-            "categories" => $categories,"route"=>$route
+            "categories" => $categories,"route"=>$route->uri
         ]);
     }
 
@@ -35,7 +35,7 @@ class App extends Controller
         $products = DB::table("product")
             ->get();
         return view("admin/product_list", [
-            "products" => $products,"route"=>$route
+            "products" => $products,"route"=>$route->uri
         ]);
     }
 
@@ -99,5 +99,26 @@ class App extends Controller
         }
     }
 
+    public function searching(Request $request)
+    {
+        $search = $request->input("search");
+        $where = $request->input('whereAmI');
+        if ($where == "admin/category_list" || $where == "admin/edit_category"){
+            $what = "category";
+            $column = "category_name";
+        }elseif ($where == "admin/product_list" || $where == "admin/edit_product"){
+            $what = "product";
+            $column = "prd_name";
+        }
+        $filtered = DB::table($what)->where($column,'like','%'.$search.'%')->get();
 
+        if ($what == "product" ){
+            return view("admin/product_list",['products'=>$filtered,'route'=>$where]);
+//            The code below wont work because the data which we passing in route() it treated as parameters
+//            return redirect()->route("/".$where, ['products'=>$filtered,'route'=>$where]);
+        }elseif ($what == "category"){
+            return view("admin/category_list",["categories"=>$filtered,'route'=>$where]);
+        }
+
+    }
 }
