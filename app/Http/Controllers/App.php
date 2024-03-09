@@ -117,7 +117,7 @@ class App extends Controller
 //            The code below wont work because the data which we passing in route() it treated as parameters
 //            return redirect()->route("/".$where, ['products'=>$filtered,'route'=>$where]);
         }elseif ($what == "category"){
-            return view("admin/category_list",["categories"=>$filtered,'route'=>$where]);
+            return view("admin/category-list",["categories"=>$filtered,'route'=>$where]);
         }
 
     }
