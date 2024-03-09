@@ -13,30 +13,22 @@
         {{ session('error') }}
     </div>
 @endif
-<div class="container-sm d-flex justify-content-between align-items-center" >
-    <table class="table table-borderless">
-        <tr>
-            <td>Category Name</td>
-        </tr>
-        <tr>
-            <form method="POST" action="/admin/add_cate">
-                @csrf
-                <td class="table-dark col-2">
-                    <input type="text" name="cate_name_add" placeholder="Enter category name">
-                </td>
-                <td>
-                    <button class="btn btn-dark" type="submit">Add</button>
-                </td>
-            </form>
-        </tr>
-    </table>
-    <form method="POST" action="/admin/category_list" class="d-flex" role="search">
-        @csrf
-        <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
-        <input type="hidden" name="whereAmI" value="{{$route}}">
-        <button class="btn btn-success" type="submit">Search</button>
-    </form>
-</div>
+<table class="table table table-borderless">
+    <tr>
+        <th scope="col-2">Category Name</th>
+    </tr>
+    <tr>
+        <form method="POST" action="/admin/add_cate">
+            @csrf
+        <td class="col-1 table-dark">
+            <input type="text" name="cate_name_add" placeholder="Enter category name">
+        </td>
+        <td class="col-2">
+            <button type="submit" class="btn btn-dark">Add</button>
+        </td>
+        </form>
+    </tr>
+</table>
 <br>
 <br>
 <table class="table table-hover table-bordered table-striped">
@@ -49,13 +41,13 @@
     <tbody>
         @foreach($categories as $obj)
             <tr>
-                @if($route == "admin/category_list")
+                @if($route->uri == "admin/category_list")
                     <td>{{$obj->id}}</td>
                     <td>{{$obj->category_name}}</td>
-                @elseif($route == "admin/edit_category")
+                @elseif($route->uri == "admin/edit_category")
                     <td>{{$obj->id}}</td>
                     <td>
-                        <input type="text" id="cate_name_{{$obj->id}}" value="{{$obj->category_name}}">
+                        <input type="text" id="cate_name" value="{{$obj->category_name}}">
                     </td>
                 @endif
                     <td>
@@ -65,11 +57,11 @@
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
                     </td>
-                @if($route == "admin/category_list")
+                @if($route->uri == "admin/category_list")
                     <td>
                         <button type="button" class="btn btn-outline-success"><a style="text-decoration: none;color: darkgreen" href="/admin/edit_category">Edit</a></button>
                     </td>
-                @elseif($route == "admin/edit_category")
+                @elseif($route->uri == "admin/edit_category")
                     <td>
                         <form method="POST" id="myForm{{$obj->id}}" action="/admin/edit_category">
                             @csrf
@@ -87,7 +79,7 @@
 @section('custom_js')
     <script>
         function save(cateID) {
-            const externalInput = document.getElementById('cate_name_'+cateID);
+            const externalInput = document.getElementById('cate_name');
             const form = document.getElementById('myForm'+cateID);
 
             form.addEventListener('submit', function(event) {

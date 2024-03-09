@@ -29,6 +29,4 @@ Route::post("/admin/add_product",[App::class,'update_prd']);
 
 Route::post("/admin/product_list",[App::class,"searching"]);
 
-Route::post("/admin/category_list",[App::class,"searching"]);
-
 
